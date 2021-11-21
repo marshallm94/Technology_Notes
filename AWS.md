@@ -2317,6 +2317,7 @@ The typical Elastic Beanstalk workflow looks like the following:
 
 ![](images/elastic_beanstalk_workflow.png)
 
+* [Deploy an app via the EB CLI](https://aws.amazon.com/getting-started/hands-on/deploy-app-command-line-elastic-beanstalk/)
 
 Things to learn:
 * CodeCommit
