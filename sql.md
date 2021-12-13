@@ -167,3 +167,22 @@ inefficient query.
 [PostgreSQL Practice](https://pgexercises.com/)
 
 ![PostgreSQL Commands](images/psql_commands.png)
+
+# Troubleshooting 
+
+This section exists because, at some point, I spent enough time banging my head against the wall with one of the
+problems that I thought it would be worth putting the solution somewhere on the off chance that I run into the same
+thing again at some point.
+
+1. **Problem: MariaDB won't start/I can't login to the the MariaDB/MySQL REPL**
+* After installing MariaDB with `$ brew install mariadb`, try running `$ brew services ls`. You should see the following
+  (as it relates to mariadb - you may have other output present as well):
+    ```
+    $ brew services ls
+    Name       Status  User              File
+    mariadb    started marshallmcquillen ~/Library/LaunchAgents/homebrew.mxcl.mariadb.plist
+    ```
+* If for some reason `$ brew services start mariadb` isn't working (**YOU HAVE TO RESTART YOUR COMPUTER AFTER RUNNING
+  THIS FOR THE CHANGES TO TAKE EFFECT**), try removing any log files (as well as any \*.err files) in the
+  `/usr/local/var/mysql/` directory (see [this SO answer](https://stackoverflow.com/a/50636732/7735189)) and then
+  re-trying `$ brew services start mariadb` (again, **you will have to restart you computer**).
