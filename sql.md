@@ -44,7 +44,7 @@ ORDER BY ...;
 Logical processing order of a SQL query:
 
 ```SQL
-FROM ...
+FROM/JOIN ...
 ON ...
 WHERE ...
 GROUP BY ...
@@ -167,6 +167,29 @@ inefficient query.
 [PostgreSQL Practice](https://pgexercises.com/)
 
 ![PostgreSQL Commands](images/psql_commands.png)
+
+# DB Backup
+
+1. Dump the contents of any DB's you want backed up to a file.
+
+```bash
+# the `-p` stands for password so you will be prompted for the password of the <username> you use
+
+# framework
+$ mysqldump -u <username> -p -x -B < DB names you would like copied separated by spaces > <filename_of_your_choice>.sql
+
+# example
+$ mysqldump -u Dev1 -p -x -B Stocks Options > ~/data_backup_2022_03_27.sql
+```
+
+2. SCP that file to your backup server.
+
+```bash
+# from the backup server
+$ scp <username>@<original_server_name/ip>:/path/to/filename_of_your_choice .
+```
+
+3. Start `mariadb` on the backup server (the one you just copied the dump file to) and run `source <filename_of_your_choice>.sql`
 
 # Troubleshooting 
 

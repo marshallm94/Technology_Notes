@@ -51,3 +51,52 @@ Further definitions:
 |                | Asynchronous         |
 | Fingers        | Cores                |
 | Hands          | Processors           |
+
+```python
+import multiprocessing
+import time
+import random
+
+
+def worker(number):
+    sleep = random.randrange(1, 10)
+    time.sleep(sleep)
+    print("I am Worker {}, I slept for {} seconds".format(number, sleep))
+
+
+for i in range(5):
+    t = multiprocessing.Process(target=worker, args=(i,))
+    t.start()
+
+
+print("All Processes are queued, let's see when they finish!")
+```
+
+## Hypothesis
+
+1. A 'problem domain process' that is inherently syncronous will still be syncronous when written with asyncronous code.
+
+2. Not only will a 'problem domain process' that is inherently syncronous still be syncronous when written with
+   asyncronous code, it will be *slower* than if it had been written with syncronous code.
+
+
+```python
+import asyncio
+
+async def return_x(x):
+    await asyncio.sleep(1)
+    return x
+
+async def return_y(y):
+    await asyncio.sleep(1)
+    return y
+
+async def main(x, y):
+    x = await return_x(x)
+    y = await return_y(y)
+    print(x + y)
+    return x + y
+
+if __name__ == '__main__':
+    asyncio.run(main(1, 2))
+```
