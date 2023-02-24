@@ -167,3 +167,7 @@ inefficient query.
 [PostgreSQL Practice](https://pgexercises.com/)
 
 ![PostgreSQL Commands](images/psql_commands.png)
+
+# TODO
+
+* ( 2022-09-19 ): Look into the execution order of joins in order to better understand them... 
