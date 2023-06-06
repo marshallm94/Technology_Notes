@@ -1,3 +1,110 @@
+[TOC]
+
+# Concurrency, Parallelism, Synchronous, Asynchronous and all that Jazz
+
+Terms that will be covered in this document:
+* concurrency
+* parallelism
+* threading
+* multiprocessing
+* asyncronous
+* syncronous
+* processes
+* threads
+* multithreading
+
+Problems are not inherently concurrent, parallel, syncronous or asyncronous. These words are descriptors of the
+structure or execution of a particular solution to a problem.
+
+## Lenses / Perspectives
+
+These terms are best viewed through different lenses / from different perspectives. The following is a list of the the
+lenses through which we will look at these concepts:
+
+* Problem Domain
+    * *
+* Solution Domain
+    * Hardware
+    * Software
+        * Layer 0
+        * Layer 1
+        * Layer 2
+    * Programmer
+
+### Viewed through the Hardware Lens
+
+From the
+
+### Viewed through the Programmer Lens
+
+The key thing to understand/accept is *you are programming at a higher level of abstraction when you are programming
+asyncronously.*
+
+When programming syncronously, 
+
+
+### Concepts 
+
+Concurrency & Parallelism are concepts that exist outside the domain of software and computer science. A good way of
+separating these two concepts is asking the question:
+
+> Is waiting *on external events* an unavoidable part of the solution to a problem you are trying to solve?
+
+The answer to this is **"yes" in a lot of situations**:
+* Physical World Examples: 
+    * Chess Tournaments:
+        * Player A must wait for Player B to move before he can move again.
+    * Baking/Cooking:
+        * You must wait for the oven to preheat before you can use it
+    * 
+* Digital World Examples: 
+    * You must wait for an API response after you have sent a request
+    * You must wait for a DB to return data you queried
+
+
+
+* **Concurrency**: *Progress* on two or more tasks is made *at the exact same time.*
+    * Concurrency is about the *design/structure* of the solution
+* **Parallelism**: *Actions* need to make progress on two or more tasks are *performed at the exact same time.*
+    * Parallelism is about *action*
+
+
+
+When I say "at the exact same time" I mean *at the exact same time*, the same way you can snap the fingers of both hands
+*at the exact same time*.
+
+
+
+The real questions is:
+
+* Multiprocessing:
+    * A means to implement parallelism.
+    * The act of spreading operations over multiple cores on a computer
+* Threading:
+    * 
+
+
+There are two perspectives/lenses through with we look at these terms:
+* The "Problem Domain" Lens:
+    * Definitions viewed through this lens:
+        * Concurrency/Concurrent: **Progress** on two or more tasks is made *at the exact same time.*
+* The "Solution Domain" Lens:
+    * Definitions viewed through this lens:
+        * Parallelism/Parallel: **Actions** need to make progress on two or more tasks are **performed** *at the exact same time.*
+
+
+* All parallelism is concurrent, not all concurrency is parallelism.
+
+
+
+## Programs, Processes & Threads
+
+* Programs are what developers write...
+    * Processes are executing instances of an application.
+        * Threads are paths of execution *within* a process.
+
+* Processes setup the resources need
+
 # Concurrency & Parallelism Through the Lens of Music
 
 Music domain (piano being the instrument of choice):
@@ -100,3 +207,12 @@ async def main(x, y):
 if __name__ == '__main__':
     asyncio.run(main(1, 2))
 ```
+
+
+# IDK man...
+
+You *can* call non-async code from async code
+
+> "Conversely you absolutely can call non-async code from async-code, in fact it’s easy to do so. But if a
+> method/function call might “block” (ie. take a long time before it returns) then you really shouldn’t."
+- [Part 5 Here](https://bbc.github.io/cloudfit-public-docs/)
