@@ -13,8 +13,77 @@ Terms that will be covered in this document:
 * threads
 * multithreading
 
-Problems are not inherently concurrent, parallel, syncronous or asyncronous. These words are descriptors of the
-structure or execution of a particular solution to a problem.
+
+**What is typically left out of the conversation/explanations regarding these concepts?**
+* You are coming to these concepts with a the implementation of a solution whose structure *is inherently asyncronous*,
+  therefore it is difficult to differentiate what *isn't* asyncronous.
+
+so lets zoom out...
+
+# Problems Domain/Space & Solution Domain/Space
+
+Problems are not inherently concurrent, parallel, syncronous or asyncronous.
+
+* Problems...:
+    * ...have *definitions*.
+    * ...have multiple solutions (some more efficient than others).
+* Solutions...:
+    * ...have *structure*.
+    * ...have *dimensions*.
+    * ...are *implemented* with different *technologies*.
+    * ...are *executed* with those technologies..
+
+The words *"concurrent, parallel, asynchronous and synchronous"* are *descriptors of the structure or execution of a
+particular solution* to a problem.
+
+* 'Concurrent', 'asynchronous' and 'synchronous' are a descriptors of the *structure* of a particular solution.
+* 'Parallel' is a descriptor of the *execution* of a particular solution.
+
+## Examples
+
+A problem gets broken down into tasks A, B, C and D, each of which must be completed for the problem to be completed.
+* If...
+    * D is dependent on C...
+    * C is dependent on B...
+    * and B is dependent on A...
+  then *the structure of the solution is linear, and therefore neither concurrency nor parallelism are applicable
+  descriptors of this solution*.
+
+* Examples:
+    * **Chess:** A single chess match between two players. There is no way around the fact that each player must wait on
+      the other player to make their next move.
+    * **Medicine:** 
+    * **Programming (without I/O):**
+    * **Programming (with I/O):**
+
+$$
+\begin{align}
+& A \\
+B & = f(A) \\
+C & = g(B) \\
+D & = h(C)
+\end{align}
+$$
+
+
+    # 
+
+![](images/concurreny_vs_parallelism.png)
+
+
+The question is not:
+> Should the solution be asyncronous or syncronous?
+
+The question is:
+
+> *Which* parts of the solution can/should be asyncronous and *which* parts *must* be syncronous?
+
+
+IT IS ABOUT UNDERSTANDING THE STRUCTURE OF THE SUBSOLUTION.....
+
+Technologies are used to implement solutions. This implies that the solution exists prior to the technology
+
+
 
 ## Lenses / Perspectives
 
@@ -22,7 +91,6 @@ These terms are best viewed through different lenses / from different perspectiv
 lenses through which we will look at these concepts:
 
 * Problem Domain
-    * *
 * Solution Domain
     * Hardware
     * Software
@@ -216,3 +284,6 @@ You *can* call non-async code from async code
 > "Conversely you absolutely can call non-async code from async-code, in fact it’s easy to do so. But if a
 > method/function call might “block” (ie. take a long time before it returns) then you really shouldn’t."
 - [Part 5 Here](https://bbc.github.io/cloudfit-public-docs/)
+
+...however, if that call that might "block" is necessary for all downstream operations, *there is no avoiding the
+blocking...?*
