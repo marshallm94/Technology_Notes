@@ -20,7 +20,7 @@ Terms that will be covered in this document:
 
 so lets zoom out...
 
-# Problems Domain/Space & Solution Domain/Space
+# Problem Domain & Solution Domain
 
 Problems are not inherently concurrent, parallel, syncronous or asyncronous.
 
@@ -34,20 +34,52 @@ Problems are not inherently concurrent, parallel, syncronous or asyncronous.
     * ...are *executed* with those technologies..
 
 The words *"concurrent, parallel, asynchronous and synchronous"* are *descriptors of the structure or execution of a
-particular solution* to a problem.
+particular solution* to a problem. They are not terms that apply to a problem.
 
 * 'Concurrent', 'asynchronous' and 'synchronous' are a descriptors of the *structure* of a particular solution.
 * 'Parallel' is a descriptor of the *execution* of a particular solution.
 
+True or not?: A mismatch between the *structure* of a solution and the technology used to *implement* that solution
+usually results in an inefficiency with respect to a particular *dimension* of that solution (e.g. time)....
+
 ## Examples
 
 A problem gets broken down into tasks A, B, C and D, each of which must be completed for the problem to be completed.
-* If...
+1. If...
     * D is dependent on C...
     * C is dependent on B...
     * and B is dependent on A...
-  then *the structure of the solution is linear, and therefore neither concurrency nor parallelism are applicable
-  descriptors of this solution*.
+
+...then the *structure* of the solution is sequential/linear. This means...:
+    * ...the *execution* of the solution should be *syncronous*
+
+![](images/concurreny_vs_parallelism__sequential.png)
+
+![](images/async_vs_sync__example1.png)
+
+* A note on how I'm measuring execution time:
+    * I'm not measuring the time of the *entire* program (`$ time python [ tmp.py | tmp2.py ]`)
+        * This would not only measure the time of interpretation, but would also measure the time it takes to import
+          `asyncio`
+    * I'm not measuring the time to start and stop the event loop (`asyncio.run(<whatever>)`)
+        * This doesn't feel like a fair comparison
+
+**Results**
+```bash
+# Synchronous technology used to implement a syncronous solution
+Average runtime (nanoseconds): 1242.164
+Runtime deciles (nanoseconds): [   0.    0. 1000. 1000. 1000. 1000. 1000. 1000. 2000. 2000.]
+
+# Asynchronous technology used to implement a syncronous solution
+Average runtime (nanoseconds): 3336.65
+Runtime deciles (nanoseconds): [1000. 2000. 2000. 3000. 3000. 3000. 3000. 3000. 3000. 4000.]
+```
+
+2. If...
+    * 
+
+
+and therefore neither concurrency nor parallelism are applicable descriptors of this solution.
 
 * Examples:
     * **Chess:** A single chess match between two players. There is no way around the fact that each player must wait on
@@ -65,10 +97,6 @@ D & = h(C)
 \end{align}
 $$
 
-
-    # 
-
-![](images/concurreny_vs_parallelism.png)
 
 
 The question is not:
