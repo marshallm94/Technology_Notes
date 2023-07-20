@@ -2,42 +2,121 @@
 
 # Concurrency, Parallelism, Synchronous, Asynchronous and all that Jazz
 
-Terms that will be covered in this document:
+Terms that will be covered and differentiated in this document:
 * concurrency
 * parallelism
+* asynchronous
+* synchronous
 * threading
 * multiprocessing
-* asyncronous
-* syncronous
 * processes
 * threads
 * multithreading
 
+## What is typically *missing* from "asynchronous vs synchronous" explanations?
 
-**What is typically left out of the conversation/explanations regarding these concepts?**
-* You are coming to these concepts with a the implementation of a solution whose structure *is inherently asyncronous*,
-  therefore it is difficult to differentiate what *isn't* asyncronous.
+I was introduced to all these terms *through the lens of* building a REST API.
 
-so lets zoom out...
+My belief is that the reason I don't feel as though I have a firm understanding of these concepts is because I am trying to differentiate/"create some
+space between" these terms **through that same lens**, and this is difficult to do because the structure of a RESTful API *is inherently
+asynchronous*.
 
-# Problem Domain & Solution Domain
+It would make such little sense to have an API be synchronous that it is glossed over
 
-Problems are not inherently concurrent, parallel, syncronous or asyncronous.
+so lets zoom out, remove this lens, define some terms, and get a handle on what is going on...
+
+### Problem Domain & Solution Domain
+
+| Layer Level | Layer Description       |
+| ---         | ---                     |
+| 2           | Solution Implementation |
+| 1           | Solution Structure      |
+| 0           | Problem Definition      |
 
 * Problems...:
     * ...have *definitions*.
-    * ...have multiple solutions (some more efficient than others).
+    * ...have multiple solutions.
 * Solutions...:
     * ...have *structure*.
     * ...have *dimensions*.
-    * ...are *implemented* with different *technologies*.
-    * ...are *executed* with those technologies..
+* Implementations...:
+    * ...can be in different *technologies*.
+    * ...are *executed* with these technologies.
+
+Given this, a few statements can be:
+* Definition precedes Structure and Structure precedes Implementation.
+* Problems are not inherently concurrent, parallel, synchronous or asynchronous. These words don't *belong to that layer*. They belong in the
+  Implementation layer.
+*
+
 
 The words *"concurrent, parallel, asynchronous and synchronous"* are *descriptors of the structure or execution of a
 particular solution* to a problem. They are not terms that apply to a problem.
 
 * 'Concurrent', 'asynchronous' and 'synchronous' are a descriptors of the *structure* of a particular solution.
 * 'Parallel' is a descriptor of the *execution* of a particular solution.
+
+
+An asynchronous implementation makes sense when:
+* 
+
+
+
+**General structure of an API:**
+![](images/concurreny_vs_parallelism__api.png)
+
+There are N clients requesting some service from 1 server
+
+
+
+
+
+
+
+
+## What is our Guiding Question?
+
+My hypothesis is:
+
+A mismatch between the *structure* of a solution and the *implementation* of a solution will be slower than a match between the said structure
+
+
+| Solution     | Implementation | "will be"   | Solution     | Implementation |
+| ----         | ----           | ----        | ----         | ----           |
+| Synchronous  | Asynchronous   | Slower than | Synchronous  | Synchronous    |
+| Asynchronous | Synchronous    | Faster than | Asynchronous | Synchronous    |
+
+
+ 
+
+
+A solution whose *structure* is asynchronous
+1. A 'problem domain process' that is inherently synchronous will still be synchronous when written with asynchronous code.
+
+2. Not only will a 'problem domain process' that is inherently synchronous still be synchronous when written with
+   asynchronous code, it will be *slower* than if it had been written with synchronous code.
+
+
+```python
+import asyncio
+
+async def return_x(x):
+    await asyncio.sleep(1)
+    return x
+
+async def return_y(y):
+    await asyncio.sleep(1)
+    return y
+
+async def main(x, y):
+    x = await return_x(x)
+    y = await return_y(y)
+    print(x + y)
+    return x + y
+
+if __name__ == '__main__':
+    asyncio.run(main(1, 2))
+```
 
 True or not?: A mismatch between the *structure* of a solution and the technology used to *implement* that solution
 usually results in an inefficiency with respect to a particular *dimension* of that solution (e.g. time)....
@@ -46,12 +125,17 @@ usually results in an inefficiency with respect to a particular *dimension* of t
 
 A problem gets broken down into tasks A, B, C and D, each of which must be completed for the problem to be completed.
 1. If...
-    * D is dependent on C...
-    * C is dependent on B...
-    * and B is dependent on A...
 
-...then the *structure* of the solution is sequential/linear. This means...:
-    * ...the *execution* of the solution should be *syncronous*
+$$
+\begin{align}
+D & = h(C) \\
+C & = g(B) \\
+B & = f(A) \\
+& A
+\end{align}
+$$
+
+...then the *structure* of the solution is sequential/linear. This means the *execution* of the solution should be *synchronous*
 
 ![](images/concurreny_vs_parallelism__sequential.png)
 
@@ -66,11 +150,11 @@ A problem gets broken down into tasks A, B, C and D, each of which must be compl
 
 **Results**
 ```bash
-# Synchronous technology used to implement a syncronous solution
+# Synchronous technology used to implement a synchronous solution
 Average runtime (nanoseconds): 1242.164
 Runtime deciles (nanoseconds): [   0.    0. 1000. 1000. 1000. 1000. 1000. 1000. 2000. 2000.]
 
-# Asynchronous technology used to implement a syncronous solution
+# Asynchronous technology used to implement a synchronous solution
 Average runtime (nanoseconds): 3336.65
 Runtime deciles (nanoseconds): [1000. 2000. 2000. 3000. 3000. 3000. 3000. 3000. 3000. 4000.]
 ```
@@ -88,28 +172,19 @@ and therefore neither concurrency nor parallelism are applicable descriptors of 
     * **Programming (without I/O):**
     * **Programming (with I/O):**
 
-$$
-\begin{align}
-& A \\
-B & = f(A) \\
-C & = g(B) \\
-D & = h(C)
-\end{align}
-$$
-
 
 
 The question is not:
-> Should the solution be asyncronous or syncronous?
+> Should the solution be asynchronous or synchronous?
 
 The question is:
 
-> *Which* parts of the solution can/should be asyncronous and *which* parts *must* be syncronous?
+> *Which* parts of the solution can/should be asynchronous and *which* parts *must* be synchronous?
 
 
 IT IS ABOUT UNDERSTANDING THE STRUCTURE OF THE SUBSOLUTION.....
 
-Technologies are used to implement solutions. This implies that the solution exists prior to the technology
+Technologies are used to implement solutions. 
 
 
 
@@ -134,9 +209,9 @@ From the
 ### Viewed through the Programmer Lens
 
 The key thing to understand/accept is *you are programming at a higher level of abstraction when you are programming
-asyncronously.*
+asynchronously.*
 
-When programming syncronously, 
+When programming synchronously, 
 
 
 ### Concepts 
@@ -217,7 +292,7 @@ Computer Science domain:
 * parallelism
 * threading
 * multiprocessing
-* asyncronous I/O
+* asynchronous I/O
 * process/task/threads
 * processor
 * core
@@ -274,36 +349,6 @@ for i in range(5):
 
 print("All Processes are queued, let's see when they finish!")
 ```
-
-## Hypothesis
-
-1. A 'problem domain process' that is inherently syncronous will still be syncronous when written with asyncronous code.
-
-2. Not only will a 'problem domain process' that is inherently syncronous still be syncronous when written with
-   asyncronous code, it will be *slower* than if it had been written with syncronous code.
-
-
-```python
-import asyncio
-
-async def return_x(x):
-    await asyncio.sleep(1)
-    return x
-
-async def return_y(y):
-    await asyncio.sleep(1)
-    return y
-
-async def main(x, y):
-    x = await return_x(x)
-    y = await return_y(y)
-    print(x + y)
-    return x + y
-
-if __name__ == '__main__':
-    asyncio.run(main(1, 2))
-```
-
 
 # IDK man...
 
