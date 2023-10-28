@@ -1,5 +1,11 @@
 [TOC]
 
+* ( 2023-10-28 ): 
+    * Understanding asynchronous structure is about understanding "Sub-Problem Independence"
+* ( 2023-07-27 ): 
+    * I do think part of my confusion comes from the fact that if *any* part of your program is implemented asynchronously, you have to wrap the
+      *entire* program in `async`, which may give off the impression that the *entire* program structure is asynchronous.
+
 # Concurrency, Parallelism, Synchronous, Asynchronous and all that Jazz
 
 Terms that will be covered and differentiated in this document:
@@ -7,6 +13,7 @@ Terms that will be covered and differentiated in this document:
 * parallelism
 * asynchronous
 * synchronous
+    * In this context, `synchronous == sequential`
 * threading
 * multiprocessing
 * processes
@@ -25,7 +32,7 @@ It would make such little sense to have an API be synchronous that it is glossed
 
 so lets zoom out, remove this lens, define some terms, and get a handle on what is going on...
 
-### Problem Domain & Solution Domain
+## Problem Domain & Solution Domain
 
 | Layer Level | Layer Description       |
 | ---         | ---                     |
@@ -43,22 +50,21 @@ so lets zoom out, remove this lens, define some terms, and get a handle on what 
     * ...can be in different *technologies*.
     * ...are *executed* with these technologies.
 
-Given this, a few statements can be:
+Given this conceptual framework, a few statements can be made:
 * Definition precedes Structure and Structure precedes Implementation.
-* Problems are not inherently concurrent, parallel, synchronous or asynchronous. These words don't *belong to that layer*. They belong in the
-  Implementation layer.
-*
+* Problems are not inherently concurrent, parallel, synchronous or asynchronous. These words don't *belong* to that layer.
+* The words *"concurrent, parallel, asynchronous and synchronous"* are *descriptors of the implementation of a particular structure.*
+* Certain Structures lend themselves to different Implementations.
+    * Different Implementations are better/worse with respect to a different *dimension* of a Structure
 
+Let's go through some concrete examples
 
-The words *"concurrent, parallel, asynchronous and synchronous"* are *descriptors of the structure or execution of a
-particular solution* to a problem. They are not terms that apply to a problem.
+### Examples
 
-* 'Concurrent', 'asynchronous' and 'synchronous' are a descriptors of the *structure* of a particular solution.
-* 'Parallel' is a descriptor of the *execution* of a particular solution.
+Let's return to the REST API that brought us here and apply our framework to that situation.
 
-
-An asynchronous implementation makes sense when:
-* 
+**What is the problem definition?**
+* We want our server to respond to as many requests as possible.
 
 
 
